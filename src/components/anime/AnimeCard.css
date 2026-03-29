@@ -1,0 +1,69 @@
+.card-img-wrap { position: relative; overflow: hidden; border-radius: 10px 10px 0 0; }
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(5,5,15,0.9) 0%, transparent 60%);
+  pointer-events: none;
+}
+.card-badges {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.card-hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(5,5,15,0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.anime-card:hover .card-hover-overlay { opacity: 1; }
+.play-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: var(--accent-glow);
+}
+.play-btn:hover { transform: scale(1.1); }
+.card-genres { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; }
+.card-watchlist-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(5,5,15,0.8);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.card-watchlist-btn:hover, .card-watchlist-btn.active { background: var(--accent-soft); color: var(--accent); border-color: var(--border-accent); }
+.card-info { padding: 10px 8px 12px; }
+.card-title { font-weight: 600; font-size: 0.88rem; line-height: 1.3; margin-bottom: 5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.card-meta { display: flex; align-items: center; gap: 8px; }
+.card-ep { font-size: 0.75rem; color: var(--text-muted); }
+.status-dot { width: 6px; height: 6px; border-radius: 50%; margin-left: auto; }
+.status-dot.ongoing { background: #00ff88; box-shadow: 0 0 6px #00ff88; }
+.status-dot.done { background: var(--text-muted); }
+.card-sm .card-title { font-size: 0.8rem; }

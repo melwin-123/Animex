@@ -1,0 +1,58 @@
+.trending-page { display: flex; flex-direction: column; gap: 36px; }
+
+.trending-hero-banner {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  padding: 48px 40px;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border);
+}
+.thb-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(230,57,70,0.15) 0%, rgba(247,127,0,0.1) 50%, transparent 100%);
+}
+.thb-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 20% 50%, rgba(230,57,70,0.08) 0%, transparent 60%),
+    radial-gradient(circle at 80% 50%, rgba(247,127,0,0.06) 0%, transparent 60%);
+}
+.top-rated-banner .thb-bg, .top-rated-banner .tr-bg {
+  background: linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(180,79,255,0.1) 100%);
+}
+.thb-content { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 8px; }
+.thb-title { font-family: 'Orbitron', monospace; font-size: 2.2rem; font-weight: 900; letter-spacing: 2px; }
+.thb-sub { color: var(--text-muted); font-size: 0.95rem; }
+
+.t-section { display: flex; flex-direction: column; gap: 18px; }
+
+.top-rated-list { display: flex; flex-direction: column; gap: 10px; }
+.tr-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+.tr-item:hover { border-color: var(--border-accent); transform: translateX(4px); }
+.tr-rank {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--text-muted);
+  min-width: 44px;
+  text-align: center;
+}
+.tr-rank.top3 { color: #ffd700; text-shadow: 0 0 12px rgba(255,215,0,0.4); }
+.tr-cover { width: 52px; height: 72px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+.tr-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+.tr-title { font-weight: 700; font-size: 0.95rem; }
+.tr-meta { font-size: 0.78rem; color: var(--text-muted); }
+.tr-genres { display: flex; gap: 5px; flex-wrap: wrap; }
+.tr-rating { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.tr-score { font-family: 'Orbitron', monospace; font-size: 1.2rem; font-weight: 900; color: #ffd700; }

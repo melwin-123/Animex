@@ -1,0 +1,96 @@
+.header {
+  position: fixed;
+  top: 0;
+  left:64px;
+  right: 0;
+  height: var(--header-h);
+  background: rgba(5,5,15,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 24px;
+  z-index: 90;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.header-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  min-width: 120px;
+}
+
+.header-search {
+  flex: 1;
+  max-width: 420px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-icon {
+  position: absolute;
+  left: 12px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+.header-search-input {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.88rem;
+  padding: 8px 16px 8px 38px;
+  transition: border-color 0.2s, background 0.2s;
+  width: 100%;
+}
+.header-search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgba(230,57,70,0.05);
+}
+.header-search-input::placeholder { color: var(--text-muted); }
+
+.header-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+
+.dl-indicator {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--accent2-soft);
+  border: 1px solid rgba(247,127,0,0.3);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent2);
+  cursor: pointer;
+}
+.dl-spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(247,127,0,0.2);
+  border-top-color: var(--accent2);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.notif-btn { position: relative; }
+
+.header-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--border-accent);
+  object-fit: cover;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.header-avatar:hover { border-color: var(--accent); }

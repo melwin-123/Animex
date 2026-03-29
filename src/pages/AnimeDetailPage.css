@@ -1,0 +1,128 @@
+.detail-banner {
+  position: relative;
+  height: 420px;
+  margin: -28px -28px 0;
+  border-radius: 0 0 20px 20px;
+  overflow: hidden;
+}
+.detail-banner-img { width: 100%; height: 100%; object-fit: cover; }
+.detail-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(5,5,15,0.97) 0%, rgba(5,5,15,0.8) 50%, rgba(5,5,15,0.4) 100%),
+    linear-gradient(to top, rgba(5,5,15,0.95) 0%, transparent 50%);
+}
+.detail-banner-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 28px;
+  align-items: flex-end;
+  padding: 32px 40px;
+}
+.detail-cover {
+  flex-shrink: 0;
+  width: 140px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid var(--border-accent);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6), var(--accent-glow);
+}
+.detail-cover img { width: 100%; display: block; }
+.detail-info { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.detail-badges { display: flex; gap: 8px; }
+.detail-title { font-family: 'Orbitron', monospace; font-size: clamp(1.4rem, 3vw, 2.2rem); font-weight: 900; line-height: 1.1; }
+.detail-title-jp { font-family: 'Noto Sans JP'; font-size: 0.85rem; color: var(--text-muted); letter-spacing: 2px; }
+
+.detail-stats { display: flex; gap: 20px; flex-wrap: wrap; }
+.stat-item { display: flex; align-items: center; gap: 6px; }
+.stat-val { font-weight: 700; font-size: 0.95rem; }
+.stat-label { font-size: 0.75rem; color: var(--text-muted); }
+
+.detail-genres { display: flex; gap: 6px; flex-wrap: wrap; }
+.detail-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.detail-play-btn { font-size: 0.95rem; }
+.wl-active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+.detail-body { padding: 32px 0; display: flex; flex-direction: column; gap: 40px; }
+.detail-section { display: flex; flex-direction: column; gap: 18px; }
+.detail-synopsis { color: rgba(240,240,255,0.75); line-height: 1.7; font-size: 0.95rem; max-width: 800px; }
+
+.eps-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.season-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.season-tab {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.season-tab:hover { border-color: var(--accent); color: var(--accent); }
+.season-tab.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+
+.episodes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+.episode-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.episode-card:hover { border-color: var(--border-accent); transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,0.4); }
+.ep-thumb { position: relative; aspect-ratio: 16/9; overflow: hidden; }
+.ep-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+.episode-card:hover .ep-thumb img { transform: scale(1.05); }
+.ep-play-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(5,5,15,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.episode-card:hover .ep-play-overlay { opacity: 1; }
+.ep-num {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: rgba(5,5,15,0.85);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+.ep-info { padding: 10px 12px; }
+.ep-title { font-size: 0.82rem; font-weight: 600; margin-bottom: 6px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.ep-meta { display: flex; align-items: center; justify-content: space-between; }
+.ep-dur { font-size: 0.75rem; color: var(--text-muted); }
+.ep-dl-btn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px 7px;
+  display: flex;
+  align-items: center;
+  transition: all 0.15s;
+}
+.ep-dl-btn:hover { background: var(--accent2-soft); color: var(--accent2); border-color: rgba(247,127,0,0.3); }
+
+.show-more-btn { align-self: center; width: 100%; max-width: 280px; justify-content: center; margin-top: 6px; }
