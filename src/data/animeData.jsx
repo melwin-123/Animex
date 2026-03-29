@@ -173,12 +173,12 @@ export const MOCK_ACCOUNTS = [
     bio: "Anime is life. 🔥"
   },
   {
-    id: 2, username: "SakuraDream", email: "sakura@animex.com", password: "sakura123",
+    id: 2, username: "User2", email: "user2@animex.com", password: "user123",
     avatar: "https://i.pravatar.cc/150?img=25", role: "user", joinDate: "2023-06-20", plan: "Free",
     bio: "Slice of life enthusiast 🌸"
   },
   {
-    id: 3, username: "NarutoFan99", email: "naruto@animex.com", password: "naruto123",
+    id: 3, username: "User3", email: "user3@animex.com", password: "user123",
     avatar: "https://i.pravatar.cc/150?img=33", role: "user", joinDate: "2024-01-01", plan: "Premium",
     bio: "Believe it! 🍥"
   }
