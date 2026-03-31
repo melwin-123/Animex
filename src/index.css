@@ -334,3 +334,128 @@ select.input { appearance: none; cursor: pointer; }
 @media (min-width: 1200px) {
   .anime-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
 }
+
+body[data-theme='ocean'] {
+  --accent: #00b4d8;
+  --accent-soft: rgba(0,180,216,0.14);
+  --accent-glow: 0 0 20px rgba(0,180,216,0.35);
+  --accent2: #48cae4;
+  --accent2-soft: rgba(72,202,228,0.14);
+  --neon-blue: #90e0ef;
+  --neon-purple: #5390d9;
+}
+
+body[data-theme='violet'] {
+  --accent: #9d4edd;
+  --accent-soft: rgba(157,78,221,0.14);
+  --accent-glow: 0 0 20px rgba(157,78,221,0.35);
+  --accent2: #c77dff;
+  --accent2-soft: rgba(199,125,255,0.14);
+  --neon-blue: #7b2cbf;
+  --neon-purple: #e0aaff;
+}
+
+.animex-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.animex-stat-card {
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.animex-stat-card span {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.animex-stat-card p {
+  margin-top: 6px;
+  color: var(--text-secondary);
+}
+
+.continue-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.continue-card {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 14px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+
+.continue-card img {
+  width: 100%;
+  height: 100%;
+  min-height: 120px;
+  object-fit: cover;
+}
+
+.continue-info {
+  padding: 14px 14px 14px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.continue-info span, .continue-info small {
+  color: var(--text-secondary);
+}
+
+.recent-searches-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.recent-searches-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+}
+
+.recent-search-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+.setting-row:last-child { border-bottom: none; }
+.setting-label { font-weight: 700; }
+.setting-desc { color: var(--text-secondary); margin-top: 4px; }
+
+@media (max-width: 700px) {
+  .continue-card {
+    grid-template-columns: 1fr;
+  }
+
+  .continue-info {
+    padding: 0 14px 14px;
+  }
+
+  .setting-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

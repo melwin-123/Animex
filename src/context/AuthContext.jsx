@@ -1,46 +1,33 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { MOCK_ACCOUNTS } from '../data/animeData';
+import { readJSON, removeKey, userScopedKey, writeJSON } from '../utils/storage';
 
 const AuthContext = createContext(null);
 const ACCOUNTS_KEY = 'animex_accounts';
 const USER_KEY = 'animex_user';
 
 const normalizeEmail = (email = '') => email.trim().toLowerCase();
-
-const getStoredAccounts = () => {
-  try {
-    const saved = localStorage.getItem(ACCOUNTS_KEY);
-    if (!saved) return MOCK_ACCOUNTS;
-    const parsed = JSON.parse(saved);
-    return Array.isArray(parsed) && parsed.length ? parsed : MOCK_ACCOUNTS;
-  } catch {
-    return MOCK_ACCOUNTS;
-  }
-};
-
-const getStoredUser = () => {
-  try {
-    const saved = localStorage.getItem(USER_KEY);
-    return saved ? JSON.parse(saved) : null;
-  } catch {
-    return null;
-  }
-};
-
 const createDefaultAvatar = (seed = 'user') =>
   `https://api.dicebear.com/9.x/thumbs/svg?seed=${encodeURIComponent(seed)}`;
+
+const getStoredAccounts = () => {
+  const stored = readJSON(ACCOUNTS_KEY, null);
+  return Array.isArray(stored) && stored.length ? stored : MOCK_ACCOUNTS;
+};
+
+const getStoredUser = () => readJSON(USER_KEY, null);
 
 export const AuthProvider = ({ children }) => {
   const [accounts, setAccounts] = useState(getStoredAccounts);
   const [user, setUser] = useState(getStoredUser);
 
   useEffect(() => {
-    localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(accounts));
+    writeJSON(ACCOUNTS_KEY, accounts);
   }, [accounts]);
 
   useEffect(() => {
-    if (user) localStorage.setItem(USER_KEY, JSON.stringify(user));
-    else localStorage.removeItem(USER_KEY);
+    if (user) writeJSON(USER_KEY, user);
+    else removeKey(USER_KEY);
   }, [user]);
 
   const login = (email, password) => {
@@ -51,9 +38,7 @@ export const AuthProvider = ({ children }) => {
       (account) => normalizeEmail(account.email) === cleanEmail && account.password === cleanPassword
     );
 
-    if (!found) {
-      return { success: false, error: 'Invalid credentials' };
-    }
+    if (!found) return { success: false, error: 'Invalid credentials' };
 
     const { password: _password, ...safeUser } = found;
     setUser(safeUser);
@@ -65,20 +50,10 @@ export const AuthProvider = ({ children }) => {
     const cleanEmail = normalizeEmail(email);
     const cleanPassword = password.trim();
 
-    if (cleanUsername.length < 3) {
-      return { success: false, error: 'Username should be at least 3 characters.' };
-    }
-
-    if (!cleanEmail.includes('@')) {
-      return { success: false, error: 'Enter a valid email address.' };
-    }
-
-    if (cleanPassword.length < 6) {
-      return { success: false, error: 'Password should be at least 6 characters.' };
-    }
-
-    const emailExists = accounts.some((account) => normalizeEmail(account.email) === cleanEmail);
-    if (emailExists) {
+    if (cleanUsername.length < 3) return { success: false, error: 'Username should be at least 3 characters.' };
+    if (!cleanEmail.includes('@')) return { success: false, error: 'Enter a valid email address.' };
+    if (cleanPassword.length < 6) return { success: false, error: 'Password should be at least 6 characters.' };
+    if (accounts.some((account) => normalizeEmail(account.email) === cleanEmail)) {
       return { success: false, error: 'An account with this email already exists.' };
     }
 
@@ -110,38 +85,90 @@ export const AuthProvider = ({ children }) => {
       (account) => normalizeEmail(account.email) === nextEmail && account.id !== user.id
     );
 
-    if (duplicate) {
-      return { success: false, error: 'That email is already used by another account.' };
+    if (duplicate) return { success: false, error: 'That email is already used by another account.' };
+
+    if (updates.username && updates.username.trim().length < 3) {
+      return { success: false, error: 'Username should be at least 3 characters.' };
     }
 
     const sanitizedUpdates = {
       ...updates,
+      ...(updates.username ? { username: updates.username.trim() } : {}),
       ...(updates.email ? { email: nextEmail } : {})
     };
 
-    setAccounts((prev) =>
-      prev.map((account) =>
-        account.id === user.id ? { ...account, ...sanitizedUpdates } : account
-      )
-    );
+    setAccounts((prev) => prev.map((account) => (account.id === user.id ? { ...account, ...sanitizedUpdates } : account)));
     setUser((prev) => ({ ...prev, ...sanitizedUpdates }));
+    return { success: true };
+  };
 
+  const changePassword = ({ currentPassword, newPassword, confirmPassword }) => {
+    if (!user) return { success: false, error: 'No active user found.' };
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      return { success: false, error: 'Fill in all password fields.' };
+    }
+    if (newPassword.length < 6) return { success: false, error: 'New password should be at least 6 characters.' };
+    if (newPassword !== confirmPassword) return { success: false, error: 'New passwords do not match.' };
+
+    const currentAccount = accounts.find((account) => account.id === user.id);
+    if (!currentAccount || currentAccount.password !== currentPassword) {
+      return { success: false, error: 'Current password is incorrect.' };
+    }
+
+    setAccounts((prev) => prev.map((account) => (account.id === user.id ? { ...account, password: newPassword } : account)));
+    return { success: true };
+  };
+
+  const deleteAccount = (password) => {
+    if (!user) return { success: false, error: 'No active user found.' };
+
+    const currentAccount = accounts.find((account) => account.id === user.id);
+    if (!currentAccount || currentAccount.password !== password) {
+      return { success: false, error: 'Password is incorrect.' };
+    }
+
+    ['watchlist', 'history', 'downloads', 'recent_searches', 'preferences'].forEach((suffix) =>
+      removeKey(userScopedKey(user.id, suffix))
+    );
+
+    setAccounts((prev) => prev.filter((account) => account.id !== user.id));
+    setUser(null);
     return { success: true };
   };
 
   const switchAccount = (accountId) => {
     const found = accounts.find((account) => account.id === accountId);
-    if (!found) {
-      return { success: false, error: 'Account not found.' };
-    }
-
+    if (!found) return { success: false, error: 'Account not found.' };
     const { password: _password, ...safeUser } = found;
     setUser(safeUser);
     return { success: true, user: safeUser };
   };
 
+  const exportAccountData = () => {
+    if (!user) return null;
+    return {
+      profile: user,
+      watchlist: readJSON(userScopedKey(user.id, 'watchlist'), []),
+      history: readJSON(userScopedKey(user.id, 'history'), []),
+      downloads: readJSON(userScopedKey(user.id, 'downloads'), []),
+      recentSearches: readJSON(userScopedKey(user.id, 'recent_searches'), []),
+      preferences: readJSON(userScopedKey(user.id, 'preferences'), {})
+    };
+  };
+
   const value = useMemo(
-    () => ({ user, login, register, logout, updateUser, switchAccount, accounts }),
+    () => ({
+      user,
+      accounts,
+      login,
+      register,
+      logout,
+      updateUser,
+      changePassword,
+      deleteAccount,
+      switchAccount,
+      exportAccountData
+    }),
     [user, accounts]
   );
 
